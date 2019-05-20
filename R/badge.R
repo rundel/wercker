@@ -50,31 +50,29 @@ strip_existing_badge = function(content)
 add_wercker_badge = function(repo, badge = get_wercker_badge(repo, branch = branch),
                              branch = "master", strip_existing_badge = TRUE, verbose = TRUE)
 {
-  require_valid_repo(repo)
+  require_ghclass()
 
   res = purrr::pmap(
     list(repo, badge, branch),
     function(repo, badge, branch) {
 
-      if (verbose)
-        message("Adding wercker badge to ", repo, " ...")
-
-      readme = get_readme(repo, branch)
+      readme = ghclass::get_readme(repo, branch)
 
       if (is.null(readme)) { # README.md does not exist
         content = paste0(badge,"\n\n")
         gh_file = "README.md"
       } else {
-        cur_readme = rawToChar(base64enc::base64decode(readme$content))
         if (strip_existing_badge)
-          cur_readme = strip_existing_badge(cur_readme)
+          readme = strip_existing_badge(readme)
 
-        gh_file = purrr::pluck(readme,"path")
+        gh_file = attr(readme,"path", exact = TRUE)
         content = paste0(badge, "\n\n", cur_readme)
       }
 
       put_file(repo, file=gh_file, content=charToRaw(content),
                message="Added wercker badge", branch=branch)
+
+      usethis::ui_info("Added wercker badge to {usethis::ui_value(format_repo(repo, branch))}.")
     }
   )
 
