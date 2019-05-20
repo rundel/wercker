@@ -4,7 +4,7 @@
 \alias{test_wercker_token}
 \title{Test wercker token}
 \usage{
-test_wercker_token(token)
+test_wercker_token(token = get_wercker_token())
 }
 \arguments{
 \item{token}{character or missing, if missing the token is obtained using \code{get_wercker_token}.}
