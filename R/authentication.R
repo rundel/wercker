@@ -99,12 +99,12 @@ test_wercker_token = function(token = get_wercker_token()) {
   )
   res = purrr::safely(httr::stop_for_status)(req)
 
-  if (!is.null(res[["z"]])) {
-    usethis::ui_done("Your wercker token is working correctly!")
-  } else {
-    usethis::ui_oops(c(
-      "Your wercker token failed to authenticate!,",
-      "[{usethis::ui_value(res$error$message)}]"
-    ))
-  }
+  status_msg(
+    res,
+    "Your wercker token is functioning correctly.",
+    c(
+      "Your wercker token failed to authenticate.",
+      "Error: {usethis::ui_value(res$error$message)}"
+    )
+  )
 }

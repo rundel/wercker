@@ -1,12 +1,27 @@
-get_wercker_badge_key = function(repo)
-{
+get_wercker_badge_key = function(repo) {
   app_info = purrr::map(repo, wercker_api_get_app)
   purrr::map_chr(app_info, "badgeKey", .default=NA)
 }
 
+strip_existing_badge = function(content) {
+  md_badge_pattern = "\\[\\!\\[wercker status\\]\\(.*? \"wercker status\"\\)\\]\\(.*?\\)\n*"
+  html_badge_pattern = "<a href=\".*?\"><img alt=\"Wercker status\" src=\".*?\"></a>"
+
+  content = gsub(md_badge_pattern, "", content)
+  content = gsub(html_badge_pattern, "", content)
+}
+
+#' Get wercker badge link
+#'
+#' Generates the appropriate badge link in either HTML or Markdown format for an existing wercker app.
+#'
+#' @param repo one or more repo names in `owner/repo` format
+#' @param size size of the badge, either small or large
+#' @param type link format, either markdown or html
+#' @param branch repo branch, defaults to master
+#'
 #' @export
-get_wercker_badge = function(repo, size = "small", type = "markdown", branch = "master")
-{
+get_wercker_badge = function(repo, size = "small", type = "markdown", branch = "master") {
   size = match.arg(size, c("small", "large"), several.ok = TRUE)
   type = match.arg(type, c("markdown", "html"), several.ok = TRUE)
 
@@ -33,23 +48,18 @@ get_wercker_badge = function(repo, size = "small", type = "markdown", branch = "
 }
 
 
-strip_existing_badge = function(content)
-{
-  md_badge_pattern = "\\[\\!\\[wercker status\\]\\(.*? \"wercker status\"\\)\\]\\(.*?\\)\n*"
-  html_badge_pattern = "<a href=\".*?\"><img alt=\"Wercker status\" src=\".*?\"></a>"
-
-  content = gsub(md_badge_pattern, "", content)
-  content = gsub(html_badge_pattern, "", content)
-}
-
-
-
-
-
+#' Add wercker badge to github repo
+#'
+#' This function adds a wercker badge to a github repo's README.md.
+#'
+#' @param repo one or more repo names in `owner/repo` format
+#' @param badge one or more badge links, defaults to generating via `get_wercker_badge()`
+#' @param branch github branch to alter
+#' @param strip_existing_badge should any existing wercker badges be striped from the README.md?
+#'
 #' @export
 add_wercker_badge = function(repo, badge = get_wercker_badge(repo, branch = branch),
-                             branch = "master", strip_existing_badge = TRUE, verbose = TRUE)
-{
+                             branch = "master", strip_existing_badge = TRUE) {
   require_ghclass()
 
   res = purrr::pmap(
@@ -69,23 +79,18 @@ add_wercker_badge = function(repo, badge = get_wercker_badge(repo, branch = bran
         content = paste0(badge, "\n\n", cur_readme)
       }
 
-      put_file(repo, file=gh_file, content=charToRaw(content),
+      res = ghclass::put_file(repo, file=gh_file, content=charToRaw(content),
                message="Added wercker badge", branch=branch)
 
-      usethis::ui_info("Added wercker badge to {usethis::ui_value(format_repo(repo, branch))}.")
-    }
-  )
+      status_msg(
+        res,
+        "Adding wercker badge to {usethis::ui_value(format_repo(repo, branch))}.",
+        paste(
+          "Adding wercker badge to {usethis::ui_value(format_repo(repo, branch))} failed.",
+          "Error: {usethis::ui_value(error_msg(res))}"
+        )
+      )
 
-  purrr::walk2(
-    repo[check_errors(res)], get_errors(res),
-    function(repo, error) {
-      msg = sprintf("Adding badge to %s failed.\n", repo)
-      if (verbose) {
-        bad_repos = paste0(repo, ": ", error)
-        msg = paste0(msg, format_list(bad_repos))
-      }
-
-      warning(msg, call. = FALSE, immediate. = TRUE)
     }
   )
 }

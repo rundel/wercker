@@ -21,8 +21,8 @@ require_ghclass = function() {
 
   if (!ghclass) {
     usethis::ui_todo(
-      paste0(
-        "This functionality depends on the {usethis::ui_value(\"ghclass\")} package being installed. ",
+      paste(
+        "This functionality depends on the {usethis::ui_value(\"ghclass\")} package being installed.",
         "Please install it to use this function."
       )
     )
@@ -40,5 +40,27 @@ format_repo = function(repo, branch = "master", file = NULL) {
     repo = file.path(repo, file)
 
   repo
+}
+
+succeeded = function(x) {
+  !is.null(x$result)
+}
+
+failed = function(x) {
+  !is.null(x$error)
+}
+
+error_msg = function(x) {
+  x$error$message
+}
+
+status_msg = function(x, success, fail) {
+  if (succeeded(x)) {
+    usethis::ui_done(success)
+  } else if (failed(x)) {
+    usethis::ui_oops(fail)
+  } else {
+    stop("this shouldn't happen")
+  }
 }
 
