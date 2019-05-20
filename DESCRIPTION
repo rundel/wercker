@@ -1,16 +1,15 @@
-Package: ghclass
-Title: Tools for managing classes with github
+Package: wercker
+Title: Tools for managing wercker.
 Version: 0.1.0
-Authors@R: c(person("Colin", "Rundel", email = "rundel@gmail.com", role = c("aut", "cre")),
-             person("Mine", "Cetinkaya-Rundel", email = "mine@rstudio.com", role = c("aut")))
-Description: Tools for managing classes with github.
-Depends: R (>= 3.4.0), gh
-Imports: fs, stringr, purrr, yaml, base64enc, httr, jsonlite, tibble
-Suggests: styler, knitr, rmarkdown
+Authors@R: c(person("Colin", "Rundel", email = "rundel@gmail.com", role = c("aut", "cre")))
+Description: Tools for managing wercker.
+Depends: R (>= 3.4.0)
+Imports: stringr, purrr, httr, jsonlite, tibble, usethis
+Suggests: gh, ghclass, knitr
 License: GPL-3
 Encoding: UTF-8
-URL: https://rundel.github.io/ghclass/
-BugReports: https://github.com/rundel/ghclass/issues
+URL: https://rundel.github.io/wercker/
+BugReports: https://github.com/rundel/wercker/issues
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
