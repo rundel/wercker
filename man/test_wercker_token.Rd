@@ -20,10 +20,7 @@ test_wercker_token("bad_token")
 
 }
 \seealso{
-Other authentication functions: \code{\link{get_github_token}},
-  \code{\link{get_wercker_token}},
-  \code{\link{set_github_token}},
-  \code{\link{set_wercker_token}},
-  \code{\link{test_github_token}}
+Other authentication functions: \code{\link{get_wercker_token}},
+  \code{\link{set_wercker_token}}
 }
 \concept{authentication functions}

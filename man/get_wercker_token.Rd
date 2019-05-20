@@ -12,7 +12,7 @@ get_wercker_token()
 \details{
 This function looks for the token in the following places (in order):
 \enumerate{
-\item Value of \code{wercker_token} variable in \code{.ghclass} environment
+\item Value of \code{wercker_token} variable in \code{.wercker} environment
 (this is where the package caches the token).
 
 \item Value of \code{WERCKER_TOKEN} environmental variable.
@@ -27,10 +27,7 @@ get_wercker_token()
 
 }
 \seealso{
-Other authentication functions: \code{\link{get_github_token}},
-  \code{\link{set_github_token}},
-  \code{\link{set_wercker_token}},
-  \code{\link{test_github_token}},
+Other authentication functions: \code{\link{set_wercker_token}},
   \code{\link{test_wercker_token}}
 }
 \concept{authentication functions}
