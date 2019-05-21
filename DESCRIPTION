@@ -4,7 +4,7 @@ Version: 0.1.0
 Authors@R: c(person("Colin", "Rundel", email = "rundel@gmail.com", role = c("aut", "cre")))
 Description: Tools for managing wercker.
 Depends: R (>= 3.4.0)
-Imports: stringr, purrr, httr, jsonlite, tibble, usethis
+Imports: stringr, purrr, httr, jsonlite, tibble, usethis, glue, withr
 Suggests: gh, ghclass, knitr
 License: GPL-3
 Encoding: UTF-8
