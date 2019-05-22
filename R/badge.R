@@ -76,7 +76,7 @@ add_wercker_badge = function(repo, badge = get_wercker_badge(repo, branch = bran
           readme = strip_existing_badge(readme)
 
         gh_file = attr(readme,"path", exact = TRUE)
-        content = paste0(badge, "\n\n", cur_readme)
+        content = paste0(badge, "\n\n", readme)
       }
 
       res = ghclass::put_file(repo, file=gh_file, content=charToRaw(content),
