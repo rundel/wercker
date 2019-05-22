@@ -20,12 +20,10 @@ require_ghclass = function() {
   ghclass = requireNamespace("ghclass", quietly = TRUE)
 
   if (!ghclass) {
-    usethis::ui_todo(
-      paste(
-        "This functionality depends on the {usethis::ui_value(\"ghclass\")} package being installed.",
-        "Please install it to use this function."
-      )
-    )
+    usethis::ui_todo( c(
+      'This functionality depends on the {usethis::ui_value(\"ghclass\")} package being installed.',
+      'The package can be install via {usethis::ui_code("install.packages(\\"ghclass\\")")}.'
+    ) )
   }
 }
 
@@ -51,16 +49,19 @@ failed = function(x) {
 }
 
 error_msg = function(x) {
-  x$error$message
+  x[["error"]][["message"]]
 }
 
-status_msg = function(x, success, fail) {
-  if (succeeded(x)) {
+status_msg = function(x, success, fail, include_error_msg = TRUE) {
+  if (succeeded(x) & !missing(success)) {
     usethis::ui_done(success)
-  } else if (failed(x)) {
+  }
+
+  if (failed(x) & !missing(fail)) {
+    if (include_error_msg)
+      fail = paste(fail, "[Error: {usethis::ui_value(error_msg(x))}]")
     usethis::ui_oops(fail)
-  } else {
-    stop("this shouldn't happen")
   }
 }
+
 

@@ -85,10 +85,7 @@ add_wercker_badge = function(repo, badge = get_wercker_badge(repo, branch = bran
       status_msg(
         res,
         "Adding wercker badge to {usethis::ui_value(format_repo(repo, branch))}.",
-        paste(
-          "Adding wercker badge to {usethis::ui_value(format_repo(repo, branch))} failed.",
-          "Error: {usethis::ui_value(error_msg(res))}"
-        )
+        "Adding wercker badge to {usethis::ui_value(format_repo(repo, branch))} failed."
       )
 
     }
