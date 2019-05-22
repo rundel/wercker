@@ -1,7 +1,7 @@
 get_env_var_id_helper = function(d) {
   repos = unique(d[["repo"]])
 
-  cur_env = get_wercker_env_vars(unique(repo), warn = FALSE)
+  cur_env = get_wercker_env_vars(repos, warn = FALSE)
   cur_env = cur_env[,c("repo", "key","key_id")]
 
   merge(d, cur_env, by = c("repo", "key"), all.x = TRUE, all.y = FALSE)

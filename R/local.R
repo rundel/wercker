@@ -14,7 +14,8 @@
 #'
 #' @export
 wercker_local_build = function(repo_dir,
-                               wercker_cli = require_wercker_cli()) {
+                               wercker_cli = require_wercker_cli(),
+                               verbose = TRUE) {
   stopifnot(all(fs::dir_exists(repo_dir)))
   stopifnot(fs::file_exists(wercker_cli))
 
