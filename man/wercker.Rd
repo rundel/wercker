@@ -10,11 +10,41 @@ wercker: A package for github based classroom and assignment management
 }
 \section{authentication functions}{
 
-
 \itemize{
 \item \code{\link{get_wercker_token}} - get wercker token
 \item \code{\link{set_wercker_token}} - set wercker token
 \item \code{\link{test_wercker_token}} - test wercker token
+}
+}
+
+\section{apps}{
+
+\itemize{
+\item \link{``} -
+\item \link{``} -
+}
+}
+
+\section{badges}{
+
+\itemize{
+\item \code{\link{get_wercker_badge}} - get link to a wercker app's badge
+\item \code{\link{add_wercker_badge}} - add wercker badge to github repo
+}
+}
+
+\section{environmental variables}{
+
+\itemize{
+\item \code{\link{add_wercker_env_var}} - add a wercker environmental variable
+\item \code{\link{get_wercker_env_vars}} - get a wercker environmental variable
+}
+}
+
+\section{local wercker builds}{
+
+\itemize{
+\item \code{\link{wercker_local_build}} - build a local repo using wercker cli
 }
 }
 
