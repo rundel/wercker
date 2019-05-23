@@ -17,11 +17,20 @@ wercker: A package for github based classroom and assignment management
 }
 }
 
-\section{apps}{
+\section{wercker applications}{
 
 \itemize{
-\item \link{``} -
-\item \link{``} -
+\item \code{\link{add_wercker}} - add wercker to github repo
+\item \code{\link{check_wercker}} - check that= wercker app(s) have been created
+}
+}
+
+\section{wercker user}{
+
+\itemize{
+\item \code{\link{get_wercker_orgs}} - returns details on user's organizations
+\item \code{\link{get_wercker_apps}} - returns details on user's / organization's applications
+\item \code{\link{create_wercker_org}} - creates wercker organization(s)
 }
 }
 
