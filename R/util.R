@@ -2,7 +2,7 @@ wrap_list_elements = function(x) {
   purrr::map(
     x,
     function(y) {
-      if (length(y) > 1)
+      if (length(y) != 1)
         list(y)
       else
         y
