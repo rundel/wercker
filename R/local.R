@@ -3,7 +3,8 @@
 #' \code{wercker_local_build} uses the wercker cli tool to build local repos.
 #'
 #' @param repo_dir Vector of repo directories or a single directory containing one or more repos.
-#' @param wecker_cli Path to the wercker cli tool.
+#' @param wercker_cli Path to the wercker cli tool.
+#' @param verbose include command output while building
 #'
 #' @examples
 #' \dontrun{
@@ -13,8 +14,8 @@
 #' @family local repo functions
 #'
 #' @export
-wercker_local_build = function(repo_dir,
-                               wercker_cli = require_wercker_cli()) {
+wercker_local_build = function(repo_dir, wercker_cli = require_wercker_cli(),
+                               verbose = TRUE) {
   stopifnot(all(fs::dir_exists(repo_dir)))
   stopifnot(fs::file_exists(wercker_cli))
 

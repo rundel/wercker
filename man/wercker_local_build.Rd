@@ -4,12 +4,15 @@
 \alias{wercker_local_build}
 \title{Build local repos}
 \usage{
-wercker_local_build(repo_dir, wercker_cli = require_wercker_cli())
+wercker_local_build(repo_dir, wercker_cli = require_wercker_cli(),
+  verbose = TRUE)
 }
 \arguments{
 \item{repo_dir}{Vector of repo directories or a single directory containing one or more repos.}
 
-\item{wecker_cli}{Path to the wercker cli tool.}
+\item{wercker_cli}{Path to the wercker cli tool.}
+
+\item{verbose}{include command output while building}
 }
 \description{
 \code{wercker_local_build} uses the wercker cli tool to build local repos.
