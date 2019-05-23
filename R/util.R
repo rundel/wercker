@@ -1,3 +1,22 @@
+wrap_list_elements = function(x) {
+  purrr::map(
+    x,
+    function(y) {
+      if (length(y) > 1)
+        list(y)
+      else
+        y
+    }
+  )
+}
+
+fix_df_names = function(d, n) {
+  d = d[,n]
+  names(d) = names(n)
+  d
+}
+
+
 require_wercker_cli = function() {
   wercker = Sys.which("wercker")
 
