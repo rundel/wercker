@@ -13,6 +13,8 @@ get_wercker_orgs(simplify = TRUE)
 Returns a data frame with details on a user's organizations
 }
 \seealso{
-Other user functions: \code{\link{get_wercker_apps}}
+Other user functions: \code{\link{create_wercker_org}},
+  \code{\link{get_wercker_apps}},
+  \code{\link{get_wercker_email}}
 }
 \concept{user functions}

@@ -122,3 +122,66 @@ get_wercker_org_id = function(org) {
 
   res
 }
+
+
+
+wercker_api_create_org = function(name, contact) {
+  req = httr::PUT(
+    paste0("https://app.wercker.com/api/v2/organizations/"),
+    httr::add_headers(
+      Authorization = paste("Bearer", get_wercker_token())
+    ),
+    encode = "json",
+    body = list(
+      contactEmail = contact,
+      username = name
+    )
+  )
+
+  httr::stop_for_status(req)
+  httr::content(req)
+}
+
+#' Get wercker email
+#'
+#' Returns user's email address registered with wercker.
+#'
+#' @param public return public email or email from wercker profile
+#'
+#' @family user functions
+#'
+#' @export
+#'
+get_wercker_email = function(public = TRUE) {
+  prof = wercker_api_get_my_profile()
+
+  if (public)
+    return(prof[["publicEmail"]])
+  else
+    return(prof[["email"]])
+}
+
+#' Create a wercker organization(s)
+#'
+#' @param name organization name(s)
+#' @param contact organization contact email(s)
+#'
+#' @family user functions
+#'
+#' @export
+#'
+create_wercker_org = function(name, contact = get_wercker_email()) {
+  purrr::walk2(
+    name, contact,
+    function(name, contact) {
+      res = purrr::safely(wercker_api_create_org)(name, contact)
+
+      status_msg(
+        res,
+        glue::glue("Creating wercker organization {usethis::ui_value(name)}."),
+        glue::glue("Creating wercker organization {usethis::ui_value(name)} failed."),
+      )
+    }
+  )
+}
+
