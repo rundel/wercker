@@ -65,6 +65,7 @@ wercker_api_set_env_var = function(repo, key, key_id, value, protected) {
 #' @param key name of the environmental variable
 #' @param value value of the environmental variable
 #' @param protected should the value be protected, proctected values cannot be retrieved.
+#' @param overwrite should existing keys be overwritten
 #'
 #' @family env var functions
 #'
