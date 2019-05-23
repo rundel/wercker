@@ -103,13 +103,22 @@ get_wercker_apps = function(owner, simplify = TRUE) {
 
 
 get_wercker_org_id = function(org) {
-  orgs = wercker_api_get_my_orgs()
-  orgs = orgs[orgs[["username"]] %in% org,]
+  prof = wercker_api_get_my_profile()
+  prof = wrap_list_elements(prof)
+  prof = tibble::as_tibble(prof)
+  prof = fix_df_names(prof, c(name="username", id="id"))
+  prof[["id"]] = "me" # this is how they seem to code things currently <sigh>
 
-  missing = setdiff(org, orgs[["username"]])
+  orgs = wercker_api_get_my_orgs()
+  orgs = fix_df_names(orgs, c(name="username", id="id"))
+
+  res = rbind(prof, orgs)
+  res = res[res[["name"]] %in% org, ]
+
+  missing = setdiff(org, res[["name"]])
 
   if (length(missing) > 0)
     usethis::ui_stop("Unable to located organization(s) {usethis::ui_value(missing)} on wercker.")
 
-  fix_df_names(orgs, c(name="username", id="id"))
+  res
 }
