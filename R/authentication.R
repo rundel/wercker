@@ -21,17 +21,15 @@
 #'
 #' @export
 #'
-get_wercker_token = function()
-{
-  token = get("token", envir=.wercker)
-  if (!is.null(token))
+get_wercker_token = function() {
+
+  token = Sys.getenv("WERCKER_PAT", "")
+  if (token != "")
     return(token)
 
-  token = Sys.getenv("WERCKER_TOKEN")
-  if (token != "") {
-    assign("token", token, envir=.wercker)
+  token = Sys.getenv("WERCKER_TOKEN", "")
+  if (token != "")
     return(token)
-  }
 
   if (file.exists("~/.wercker/token")) {
     set_wercker_token("~/.wercker/token")
@@ -69,7 +67,7 @@ set_wercker_token = function(token) {
   if (file.exists(token))
     token = readLines(token, warn=FALSE)
 
-  assign("token", token, envir=.wercker)
+  Sys.setenv("WERCKER_PAT" = token)
 }
 
 
@@ -90,14 +88,7 @@ set_wercker_token = function(token) {
 #' @export
 #'
 test_wercker_token = function(token = get_wercker_token()) {
-  req = httr::GET(
-    paste0("https://app.wercker.com/api/v2/profile"),
-    httr::add_headers(
-      Authorization = paste("Bearer", token)
-    ),
-    encode = "json"
-  )
-  res = purrr::safely(httr::stop_for_status)(req)
+  res = purrr::safely(wercker_api_get_my_profile)()
 
   status_msg(
     res,
