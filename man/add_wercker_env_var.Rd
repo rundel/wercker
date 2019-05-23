@@ -15,6 +15,8 @@ add_wercker_env_var(repo, key, value, protected = FALSE,
 \item{value}{value of the environmental variable}
 
 \item{protected}{should the value be protected, proctected values cannot be retrieved.}
+
+\item{overwrite}{should existing keys be overwritten}
 }
 \description{
 Adds an environmental variable to an exist wercker app.
