@@ -93,9 +93,6 @@ test_wercker_token = function(token = get_wercker_token()) {
   status_msg(
     res,
     "Your wercker token is functioning correctly.",
-    c(
-      "Your wercker token failed to authenticate.",
-      "Error: {usethis::ui_value(res$error$message)}"
-    )
+    "Your wercker token failed to authenticate."
   )
 }
