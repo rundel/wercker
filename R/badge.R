@@ -66,7 +66,7 @@ add_wercker_badge = function(repo, badge = get_wercker_badge(repo, branch = bran
     list(repo, badge, branch),
     function(repo, badge, branch) {
 
-      readme = ghclass::get_readme(repo, branch)
+      readme = ghclass::repo_get_readme(repo, branch)
 
       if (is.null(readme)) { # README.md does not exist
         content = paste0(badge,"\n\n")
@@ -79,7 +79,7 @@ add_wercker_badge = function(repo, badge = get_wercker_badge(repo, branch = bran
         content = paste0(badge, "\n\n", readme)
       }
 
-      res = ghclass::put_file(repo, file=gh_file, content=charToRaw(content),
+      res = ghclass::repo_put_file(repo, file=gh_file, content=charToRaw(content),
                message="Added wercker badge", branch=branch)
 
       status_msg(
