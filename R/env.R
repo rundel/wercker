@@ -1,7 +1,7 @@
 get_env_var_id_helper = function(d) {
   repos = unique(d[["repo"]])
 
-  cur_env = get_wercker_env_vars(repos, warn = FALSE)
+  cur_env = wercker_env_vars(repos, warn = FALSE)
   cur_env = cur_env[,c("repo", "key","key_id")]
 
   merge(d, cur_env, by = c("repo", "key"), all.x = TRUE, all.y = FALSE)
@@ -12,7 +12,7 @@ wercker_api_add_env_var = function(repo, key, value, protected) {
   req = httr::POST(
     "https://app.wercker.com/api/v3/envvars",
     httr::add_headers(
-      Authorization = paste("Bearer", get_wercker_token())
+      Authorization = paste("Bearer", wercker_get_token())
     ),
     encode = "json",
     body = list(
@@ -33,7 +33,7 @@ wercker_api_change_env_var = function(repo, key, key_id, value, protected) {
   req = httr::PATCH(
     paste0("https://app.wercker.com/api/v3/envvars/", key_id),
     httr::add_headers(
-      Authorization = paste("Bearer", get_wercker_token())
+      Authorization = paste("Bearer", wercker_get_token())
     ),
     encode = "json",
     body = list(
@@ -71,7 +71,7 @@ wercker_api_set_env_var = function(repo, key, key_id, value, protected) {
 #'
 #' @export
 #'
-add_wercker_env_var = function(repo, key, value, protected=FALSE, overwrite = FALSE) {
+wercker_add_env_var = function(repo, key, value, protected=FALSE, overwrite = FALSE) {
   d = tibble::tibble(
     repo = repo,
     key = key,
@@ -119,7 +119,7 @@ wercker_api_get_env_var = function(repo) {
   req = httr::GET(
     paste0("https://app.wercker.com/api/v3/envvars?scope=application&target=", id),
     httr::add_headers(
-      Authorization = paste("Bearer", get_wercker_token())
+      Authorization = paste("Bearer", wercker_get_token())
     ),
     encode = "json"
   )
@@ -147,7 +147,7 @@ wercker_api_get_env_var = function(repo) {
 #' @family env var functions
 #'
 #' @export
-get_wercker_env_vars = function(repo, warn = TRUE) {
+wercker_env_vars = function(repo, warn = TRUE) {
 
   if (!warn)
     withr::local_options(list(usethis.quiet = TRUE))
@@ -176,7 +176,7 @@ wercker_api_delete_env_var = function(key_id) {
   req = httr::DELETE(
     paste0("https://app.wercker.com/api/v3/envvars/", key_id),
     httr::add_headers(
-      Authorization = paste("Bearer", get_wercker_token())
+      Authorization = paste("Bearer", wercker_get_token())
     ),
     encode = "json"
   )

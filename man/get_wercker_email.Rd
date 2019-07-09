@@ -13,8 +13,8 @@ get_wercker_email(public = TRUE)
 Returns user's email address registered with wercker.
 }
 \seealso{
-Other user functions: \code{\link{create_wercker_org}},
-  \code{\link{get_wercker_apps}},
-  \code{\link{get_wercker_orgs}}
+Other user functions: \code{\link{wercker_apps}},
+  \code{\link{wercker_create_org}},
+  \code{\link{wercker_orgs}}
 }
 \concept{user functions}

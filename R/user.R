@@ -2,7 +2,7 @@ wercker_api_get_my_profile = function() {
   req = httr::GET(
     paste0("https://app.wercker.com/api/v2/profile"),
     httr::add_headers(
-      Authorization = paste("Bearer", get_wercker_token())
+      Authorization = paste("Bearer", wercker_get_token())
     ),
     encode = "json"
   )
@@ -14,7 +14,7 @@ wercker_api_get_my_orgs = function() {
   req = httr::GET(
     paste0("https://app.wercker.com/api/v2/users/me/organizations"),
     httr::add_headers(
-      Authorization = paste("Bearer", get_wercker_token())
+      Authorization = paste("Bearer", wercker_get_token())
     ),
     encode = "json"
   )
@@ -34,7 +34,7 @@ wercker_api_get_my_orgs = function() {
 #'
 #' @export
 #'
-get_wercker_orgs = function(simplify = TRUE) {
+wercker_orgs = function(simplify = TRUE) {
   d = wercker_api_get_my_orgs()
 
   if (simplify)
@@ -49,7 +49,7 @@ wercker_api_get_apps = function(owner, limit = 100, skip = 0) {
     paste0("https://app.wercker.com/api/v3/applications/", owner,
            "?limit=",limit, "&skip=", skip),
     httr::add_headers(
-      Authorization = paste("Bearer", get_wercker_token())
+      Authorization = paste("Bearer", wercker_get_token())
     ),
     encode = "json"
   )
@@ -70,7 +70,7 @@ wercker_api_get_apps = function(owner, limit = 100, skip = 0) {
 #'
 #' @export
 #'
-get_wercker_apps = function(owner, simplify = TRUE) {
+wercker_apps = function(owner, simplify = TRUE) {
 
   res = purrr::map_dfr(
     owner,
@@ -118,29 +118,14 @@ get_wercker_org_id = function(org) {
   missing = setdiff(org, res[["name"]])
 
   if (length(missing) > 0)
-    usethis::ui_stop("Unable to located organization(s) {usethis::ui_value(missing)} on wercker.")
+    usethis::ui_stop("Unable to located organization(s) {usethis::ui_value(missing)}.")
 
   res
 }
 
 
 
-wercker_api_create_org = function(name, contact) {
-  req = httr::PUT(
-    paste0("https://app.wercker.com/api/v2/organizations/"),
-    httr::add_headers(
-      Authorization = paste("Bearer", get_wercker_token())
-    ),
-    encode = "json",
-    body = list(
-      contactEmail = contact,
-      username = name
-    )
-  )
 
-  httr::stop_for_status(req)
-  httr::content(req)
-}
 
 #' Get wercker email
 #'
@@ -161,6 +146,37 @@ get_wercker_email = function(public = TRUE) {
     return(prof[["email"]])
 }
 
+wercker_api_delete_org = function(name) {
+  req = httr::DELETE(
+    paste0("https://app.wercker.com/api/v2/organizations/", name),
+    httr::add_headers(
+      Authorization = paste("Bearer", wercker_get_token())
+    ),
+    encode = "json"
+  )
+
+  httr::stop_for_status(req)
+  httr::content(req)
+}
+
+
+wercker_api_create_org = function(name, contact) {
+  req = httr::PUT(
+    paste0("https://app.wercker.com/api/v2/organizations/"),
+    httr::add_headers(
+      Authorization = paste("Bearer", wercker_get_token())
+    ),
+    encode = "json",
+    body = list(
+      contactEmail = contact,
+      username = name
+    )
+  )
+
+  httr::stop_for_status(req)
+  httr::content(req)
+}
+
 #' Create a wercker organization(s)
 #'
 #' @param name organization name(s)
@@ -170,7 +186,7 @@ get_wercker_email = function(public = TRUE) {
 #'
 #' @export
 #'
-create_wercker_org = function(name, contact = get_wercker_email()) {
+wercker_create_org = function(name, contact = get_wercker_email()) {
   purrr::walk2(
     name, contact,
     function(name, contact) {

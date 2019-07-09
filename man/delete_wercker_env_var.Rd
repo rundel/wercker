@@ -15,7 +15,7 @@ delete_wercker_env_var(repo, key)
 Delete environmental variable(s) from existing wercker app(s).
 }
 \seealso{
-Other env var functions: \code{\link{add_wercker_env_var}},
-  \code{\link{get_wercker_env_vars}}
+Other env var functions: \code{\link{wercker_add_env_var}},
+  \code{\link{wercker_env_vars}}
 }
 \concept{env var functions}

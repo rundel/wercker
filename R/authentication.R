@@ -1,6 +1,6 @@
 #' Get wercker token
 #'
-#' \code{get_wercker_token} obtains the user's wercker authentication token.
+#' \code{wercker_get_token} obtains the user's wercker authentication token.
 #'
 #' This function looks for the token in the following places (in order):
 #' \enumerate{
@@ -14,14 +14,14 @@
 #'
 #' @examples
 #' \dontrun{
-#' get_wercker_token()
+#' wercker_get_token()
 #' }
 #'
 #' @family authentication functions
 #'
 #' @export
 #'
-get_wercker_token = function() {
+wercker_get_token = function() {
 
   token = Sys.getenv("WERCKER_PAT", "")
   if (token != "")
@@ -32,12 +32,12 @@ get_wercker_token = function() {
     return(token)
 
   if (file.exists("~/.wercker/token")) {
-    set_wercker_token("~/.wercker/token")
-    return(get_wercker_token())
+    wercker_set_token("~/.wercker/token")
+    return(wercker_get_token())
   }
 
   usethis::ui_stop(paste(
-    "Unable to locate wercker token, please use {usethis::ui_code(\"set_wercker_token()\")}",
+    "Unable to locate wercker token, please use {usethis::ui_code(\"wercker_set_token()\")}",
     "or define the {usethis::ui_value(\"WERCKER_TOKEN\")} environmental variable."
   ))
 }
@@ -45,22 +45,22 @@ get_wercker_token = function() {
 
 #' Set wercker token
 #'
-#' \code{set_wercker_token} defines the user's wercker authentication token,
-#' this value is then accessed usin \code{get_wercker_token}
+#' \code{wercker_set_token} defines the user's wercker authentication token,
+#' this value is then accessed usin \code{wercker_get_token}
 #'
 #' @param token character, either the path of a file contained the token or the actual token.
 #'
 #' @examples
 #' \dontrun{
-#' set_wercker_token("~/.wercker/token")
-#' set_wercker_token("0123456789ABCDEF0123456789ABCDEF01234567")
+#' wercker_set_token("~/.wercker/token")
+#' wercker_set_token("0123456789ABCDEF0123456789ABCDEF01234567")
 #' }
 #'
 #' @family authentication functions
 #'
 #' @export
 #'
-set_wercker_token = function(token) {
+wercker_set_token = function(token) {
   token = as.character(token)
 
   if (file.exists(token))
@@ -72,21 +72,21 @@ set_wercker_token = function(token) {
 
 #' Test wercker token
 #'
-#' \code{test_wercker_token} checks if a token is valid by attempting to authenticate with the Wercker's api.
+#' \code{wercker_test_token} checks if a token is valid by attempting to authenticate with the Wercker's api.
 #'
-#' @param token character or missing, if missing the token is obtained using \code{get_wercker_token}.
+#' @param token character or missing, if missing the token is obtained using \code{wercker_get_token}.
 #'
 #' @examples
 #' \dontrun{
-#' test_wercker_token()
-#' test_wercker_token("bad_token")
+#' wercker_test_token()
+#' wercker_test_token("bad_token")
 #' }
 #'
 #' @family authentication functions
 #'
 #' @export
 #'
-test_wercker_token = function(token = get_wercker_token()) {
+wercker_test_token = function(token = wercker_get_token()) {
   res = purrr::safely(wercker_api_get_my_profile)()
 
   status_msg(

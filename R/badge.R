@@ -1,4 +1,4 @@
-get_wercker_badge_key = function(repo) {
+wercker_get_badge_key = function(repo) {
   app_info = purrr::map(repo, wercker_api_get_app)
   purrr::map_chr(app_info, "badgeKey", .default=NA)
 }
@@ -21,7 +21,7 @@ strip_existing_badge = function(content) {
 #' @param branch repo branch, defaults to master
 #'
 #' @export
-get_wercker_badge = function(repo, size = "small", type = "markdown", branch = "master") {
+wercker_get_badge = function(repo, size = "small", type = "markdown", branch = "master") {
   size = match.arg(size, c("small", "large"), several.ok = TRUE)
   type = match.arg(type, c("markdown", "html"), several.ok = TRUE)
 
@@ -31,7 +31,7 @@ get_wercker_badge = function(repo, size = "small", type = "markdown", branch = "
     large = "m"
   )
 
-  key = get_wercker_badge_key(repo)
+  key = wercker_get_badge_key(repo)
 
   purrr::pmap_chr(
     list(size, type, key, branch),
@@ -53,12 +53,12 @@ get_wercker_badge = function(repo, size = "small", type = "markdown", branch = "
 #' This function adds a wercker badge to a github repo's README.md.
 #'
 #' @param repo one or more repo names in `owner/repo` format
-#' @param badge one or more badge links, defaults to generating via `get_wercker_badge()`
+#' @param badge one or more badge links, defaults to generating via `wercker_get_badge()`
 #' @param branch github branch to alter
 #' @param strip_existing_badge should any existing wercker badges be striped from the README.md?
 #'
 #' @export
-add_wercker_badge = function(repo, badge = get_wercker_badge(repo, branch = branch),
+wercker_add_badge = function(repo, badge = wercker_get_badge(repo, branch = branch),
                              branch = "master", strip_existing_badge = TRUE) {
   require_ghclass()
 

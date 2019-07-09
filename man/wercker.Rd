@@ -11,42 +11,42 @@ wercker: A package for github based classroom and assignment management
 \section{authentication functions}{
 
 \itemize{
-\item \code{\link{get_wercker_token}} - get wercker token
-\item \code{\link{set_wercker_token}} - set wercker token
-\item \code{\link{test_wercker_token}} - test wercker token
+\item \code{\link{wercker_get_token}} - get wercker token
+\item \code{\link{wercker_set_token}} - set wercker token
+\item \code{\link{wercker_test_token}} - test wercker token
 }
 }
 
 \section{wercker applications}{
 
 \itemize{
-\item \code{\link{add_wercker}} - add wercker to github repo
-\item \code{\link{check_wercker}} - check that= wercker app(s) have been created
+\item \code{\link{wercker_add}} - add wercker to github repo
+\item \code{\link{wercker_check}} - check that= wercker app(s) have been created
 }
 }
 
 \section{wercker user}{
 
 \itemize{
-\item \code{\link{get_wercker_orgs}} - returns details on user's organizations
-\item \code{\link{get_wercker_apps}} - returns details on user's / organization's applications
-\item \code{\link{create_wercker_org}} - creates wercker organization(s)
+\item \code{\link{wercker_orgs}} - returns details on user's organizations
+\item \code{\link{wercker_apps}} - returns details on user's / organization's applications
+\item \code{\link{wercker_create_org}} - creates wercker organization(s)
 }
 }
 
 \section{badges}{
 
 \itemize{
-\item \code{\link{get_wercker_badge}} - get link to a wercker app's badge
-\item \code{\link{add_wercker_badge}} - add wercker badge to github repo
+\item \code{\link{wercker_get_badge}} - get link to a wercker app's badge
+\item \code{\link{wercker_add_badge}} - add wercker badge to github repo
 }
 }
 
 \section{environmental variables}{
 
 \itemize{
-\item \code{\link{add_wercker_env_var}} - add a wercker environmental variable
-\item \code{\link{get_wercker_env_vars}} - get a wercker environmental variable
+\item \code{\link{wercker_add_env_var}} - add a wercker environmental variable
+\item \code{\link{wercker_env_vars}} - get a wercker environmental variable
 }
 }
 
