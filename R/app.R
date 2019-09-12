@@ -62,7 +62,11 @@ wercker_api_add_app = function(repo, provider, privacy, wercker_org_id, key) {
   )
 
   if (failed(req)) {
-    usethis::ui_warn(req[["error"]][["message"]])
+    msg = req[["error"]][["message"]]
+
+    if (msg != "Unexpected EOF")
+      usethis::ui_warn(msg)
+
     NULL
   } else {
     httr::content(req[["result"]])
@@ -234,8 +238,8 @@ wercker_add = function(repo, wercker_org = get_repo_owner(repo), add_badge=TRUE)
 
         status_msg(
           res,
-          usethis::ui_done("Creating wercker app for {usethis::ui_value(repo)} ..."),
-          usethis::ui_oops("Creating wercker app for {usethis::ui_value(repo)} failed ...")
+          glue::glue("Creating wercker app for {usethis::ui_value(repo)}."),
+          glue::glue("Creating wercker app for {usethis::ui_value(repo)} failed.")
         )
 
         if (failed(res) & wercker_app_exists(repo))

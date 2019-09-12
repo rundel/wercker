@@ -78,7 +78,7 @@ status_msg = function(x, success, fail, include_error_msg = TRUE) {
 
   if (failed(x) & !missing(fail)) {
     if (include_error_msg)
-      fail = paste(fail, "[Error: error_msg(x)]")
+      fail = paste0(fail, " [Error:", error_msg(x), "]")
     usethis::ui_oops(fail)
   }
 }
