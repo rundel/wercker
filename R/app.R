@@ -185,9 +185,15 @@ wercker_add_app = function(repo, wercker_org = get_repo_owner(repo),
 
   wercker_api_add_app(repo, provider, privacy, org_id, key)
 
-  Sys.sleep(10)
-  id = wercker_api_get_app(repo, strict = TRUE)[["id"]]
-  stopifnot(!is.null(id))
+  for(i in 1:12) {
+    id = wercker_api_get_app(repo, strict = TRUE)[["id"]]
+    if (!is.null(id))
+      break
+    Sys.sleep(5)
+  }
+  if (is.null(id)) {
+    usethis::ui_stop("Unable to retrieve app id")
+  }
 
   wercker_api_add_build_pipeline(id, privacy)
 
@@ -229,7 +235,7 @@ wercker_check = function(repo) {
 wercker_add = function(repo, wercker_org = get_repo_owner(repo), add_badge=TRUE) {
   require_valid_repo(repo)
 
-  purrr::map2(
+  purrr::walk2(
     repo, wercker_org,
     function(repo, wercker_org) {
 
@@ -254,8 +260,6 @@ wercker_add = function(repo, wercker_org = get_repo_owner(repo), add_badge=TRUE)
         if (succeeded(res) & add_badge)
           wercker_add_badge(repo)
       }
-
-      res
     }
   )
 }
