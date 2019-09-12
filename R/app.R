@@ -73,7 +73,7 @@ wercker_api_add_app = function(repo, provider, privacy, wercker_org_id, key) {
   }
 }
 
-wercker_api_add_build_pipeline = function(app_id, privacy) {
+wercker_api_add_build_pipeline = function(id, privacy) {
 
   req = httr::POST(
     paste0("https://app.wercker.com/api/v3/pipelines"),
@@ -82,12 +82,13 @@ wercker_api_add_build_pipeline = function(app_id, privacy) {
     ),
     encode = "json",
     body = list(
-      application = app_id,
-      name = "build",
-      permissions = privacy,
       pipelineName = "build",
-      setScmProviderStatus = TRUE,
-      type = "git"
+      ymlPipeline = "build",
+      type = "git",
+      application = id,
+      permissions = privacy,
+      name = "build",
+      setScmProviderStatus = TRUE
     )
   )
 
@@ -183,7 +184,12 @@ wercker_add_app = function(repo, wercker_org = get_repo_owner(repo),
   wercker_api_link_key(repo, provider, key)
 
   wercker_api_add_app(repo, provider, privacy, org_id, key)
-  wercker_api_add_build_pipeline(wercker_api_get_app(repo, strict = TRUE)$id, privacy)
+
+  Sys.sleep(10)
+  id = wercker_api_get_app(repo, strict = TRUE)[["id"]]
+  stopifnot(!is.null(id))
+
+  wercker_api_add_build_pipeline(id, privacy)
 
   invisible(NULL)
 }
@@ -223,7 +229,7 @@ wercker_check = function(repo) {
 wercker_add = function(repo, wercker_org = get_repo_owner(repo), add_badge=TRUE) {
   require_valid_repo(repo)
 
-  purrr::walk2(
+  purrr::map2(
     repo, wercker_org,
     function(repo, wercker_org) {
 
@@ -248,6 +254,8 @@ wercker_add = function(repo, wercker_org = get_repo_owner(repo), add_badge=TRUE)
         if (succeeded(res) & add_badge)
           wercker_add_badge(repo)
       }
+
+      res
     }
   )
 }
