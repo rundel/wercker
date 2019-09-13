@@ -79,7 +79,7 @@ wercker_add_badge = function(repo, badge = wercker_get_badge(repo, branch = bran
         content = paste0(badge, "\n\n", readme)
       }
 
-      res = ghclass::repo_put_file(repo, file=gh_file, content=charToRaw(content),
+      res = ghclass::repo_put_file(repo, path=gh_file, content=charToRaw(content),
                message="Added wercker badge", branch=branch)
 
       status_msg(
